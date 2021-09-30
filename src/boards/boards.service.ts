@@ -44,4 +44,4 @@ export class BoardsService {
     board.status = status;
     return board;
   }
-}1
+}
