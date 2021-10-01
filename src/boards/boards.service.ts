@@ -12,14 +12,28 @@ export class BoardsService {
     private boardRepository: BoardRepository,
   ) {}
 
+  /**
+   * 게시판 리스트
+   * @returns 리스트
+   */
   async getAllBoards(): Promise<Board[]> {
     return this.boardRepository.find();
   }
 
+  /**
+   * 게시판 생성
+   * @param createBoardDto 입력되는 데이터
+   * @returns 게시판 내용
+   */
   createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     return this.boardRepository.createBoard(createBoardDto);
   }
 
+  /**
+   * 게시판 조회
+   * @param id 기본키
+   * @returns 게시판 내용
+   */
   async getBoardById(id: number): Promise<Board> {
     const found = await this.boardRepository.findOne(id);
 
@@ -30,6 +44,10 @@ export class BoardsService {
     return found;
   }
 
+  /**
+   * 게시판 삭제
+   * @param id 게시판 기본키
+   */
   async deleteBoard(id: number): Promise<void> {
     const result = await this.boardRepository.delete(id);
 
@@ -38,6 +56,12 @@ export class BoardsService {
     }
   }
 
+  /**
+   * 게시판 상태 변경
+   * @param id 기본키
+   * @param status 게시판 상태
+   * @returns 게시판 내용
+   */
   async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
     const board = await this.getBoardById(id);
     board.status = status;
