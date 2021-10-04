@@ -56,8 +56,8 @@ export class BoardsService {
    * 게시판 삭제
    * @param id 게시판 기본키
    */
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id);
+  async deleteBoard(id: number, user: User): Promise<void> {
+    const result = await this.boardRepository.delete({ id, user });
 
     if (result.affected === 0) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
