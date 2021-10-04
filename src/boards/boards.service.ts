@@ -17,8 +17,15 @@ export class BoardsService {
    * 게시판 리스트
    * @returns 리스트
    */
-  async getAllBoards(): Promise<Board[]> {
-    return this.boardRepository.find();
+  async getAllBoards(user: User): Promise<Board[]> {
+    // return this.boardRepository.find();
+    const query = this.boardRepository.createQueryBuilder('board');
+
+    query.where('board.userId = :userId', { userId: user.id });
+
+    const boards = await query.getMany();
+
+    return boards;
   }
 
   /**
