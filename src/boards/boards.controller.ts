@@ -22,19 +22,21 @@ import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
 
 @Controller('boards')
-@UseGuards(AuthGuard())
 export class BoardsController {
   constructor(private boardService: BoardsService) {}
 
   private logger = new Logger('BoardsController');
 
   @Get()
-  getAllBoard(@GetUser() user: User): Promise<Board[]> {
-    this.logger.verbose(`User ${user.username} trying to get all boards`);
-    return this.boardService.getAllBoards(user);
+  // @UseGuards(AuthGuard())
+  getAllBoard(): Promise<Board[]> {
+    // this.logger.verbose(`User ${user.username} trying to get all boards`);
+    return this.boardService.getAllBoards();
+    // return this.boardService.getAllBoards(user);
   }
 
   @Post()
+  @UseGuards(AuthGuard())
   @UsePipes(ValidationPipe)
   createBoard(
     @Body() createBoardDto: CreateBoardDto,
@@ -51,6 +53,7 @@ export class BoardsController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   deleteBoard(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
@@ -59,6 +62,7 @@ export class BoardsController {
   }
 
   @Patch('/:id/status')
+  @UseGuards(AuthGuard())
   updateBoardStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', BoardStatusVaildationPipe) status: BoardStatus,
